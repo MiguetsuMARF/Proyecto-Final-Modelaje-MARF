@@ -145,15 +145,15 @@ SIQR_erlang3 <- function(t, state, parameters) {
       beta_l2_11 * I11 / N_eff + beta_l2_12 * I12 / N_eff +
       beta_l2 * I2 / N_eff + beta_l3 * I3 / N_eff
     
-    dS1 <- -lambda1 * S1 + p11 * gamma1 * I11 + p12 * gamma1 * I12 +
+    dS1 <- -lambda1 * S1 + p11 * gamma11 * I11 + p12 * gamma12 * I12 +
       p2 * gamma2 * I2 + p3 * gamma3 * I3 + alfa * p * R
     
-    dS2 <- -lambda2 * S2 + (1 - p11) * gamma1 * I11 + (1 - p12) * gamma1 * I12 +
+    dS2 <- -lambda2 * S2 + (1 - p11) * gamma11 * I11 + (1 - p12) * gamma12 * I12 +
       (1 - p2) * gamma2 * I2 + (1 - p3) * gamma3 * I3 + alfa * (1 - p) * R
     
-    dI11 <- lambda1 * S1 - (sigma11 + omega1 + gamma1) * I11
-    dI12 <- lambda2 * S2 - (sigma12 + omega1 + gamma1) * I12
-    dI2  <- omega1 * I11 + omega1 * I12 - (sigma2 + omega2 + gamma2) * I2
+    dI11 <- lambda1 * S1 - (sigma11 + omega11 + gamma11) * I11
+    dI12 <- lambda2 * S2 - (sigma12 + omega12 + gamma12) * I12
+    dI2  <- omega11 * I11 + omega12 * I12 - (sigma2 + omega2 + gamma2) * I2
     dI3  <- omega2 * I2 - (sigma3 + gamma3 + delta) * I3
     dQ   <- sigma11 * I11 + sigma12 * I12 + sigma2 * I2 + sigma3 * I3 - delta * Q
     dR   <- delta * I3 + delta * Q - alfa * R
@@ -166,13 +166,13 @@ pars <- c(mu = 1, p = 0.8, p11 = 0.8, p12 = 0.99, p2 = 0.8, p3 = 0.999,
           beta_l1_11 = 3, beta_l1_12 = 10, beta_l2_11 = 5, beta_l2_12 = 15,
           beta_l2 = 0.3, alfa = 0.2,
           beta_l3 = 0.15,
-          gamma1 = 0.2,
+          gamma11 = 0.2, gamma12 = 0.3,
           gamma2 = 0.6,
           gamma3 = 0.4,
           sigma11 = 0.02,sigma12 = 0.5,
           sigma2 = 0.06,
           sigma3 = 0.04,
-          omega1 = 0.5,
+          omega11 = 0.5, omega12 = 0.5,
           omega2 = 0.5,
           delta = 1/6)
 
@@ -223,7 +223,8 @@ SIQR_erlang4 <- function(t, state, parameters) {
     # 3. Al inicio del brote por emergencia la gente paga el tratamiento.
     
     if (t >= 10){
-      gamma1 <- gamma1 * 2
+      gamma11 <- gamma11 * 2
+      gamma12 <- gamma12 * 2
       gamma2 <- gamma2 * 1.5
     } else {
     }
@@ -268,15 +269,15 @@ SIQR_erlang4 <- function(t, state, parameters) {
     } else {
     }
     
-    dS1 <- -lambda1 * S1 + p11 * gamma1 * I11 + p12 * gamma1 * I12 +
+    dS1 <- -lambda1 * S1 + p11 * gamma11 * I11 + p12 * gamma12 * I12 +
       p2 * gamma2 * I2 + p3 * gamma3 * I3 + alfa * p * R
     
-    dS2 <- -lambda2 * S2 + (1 - p11) * gamma1 * I11 + (1 - p12) * gamma1 * I12 +
+    dS2 <- -lambda2 * S2 + (1 - p11) * gamma11 * I11 + (1 - p12) * gamma12 * I12 +
       (1 - p2) * gamma2 * I2 + (1 - p3) * gamma3 * I3 + alfa * (1 - p) * R
     
-    dI11 <- lambda1 * S1 - (sigma11 + omega1 + gamma1) * I11
-    dI12 <- lambda2 * S2 - (sigma12 + omega1 + gamma1) * I12
-    dI2  <- omega1 * I11 + omega1 * I12 - (sigma2 + omega2 + gamma2) * I2
+    dI11 <- lambda1 * S1 - (sigma11 + omega11 + gamma11) * I11
+    dI12 <- lambda2 * S2 - (sigma12 + omega12 + gamma12) * I12
+    dI2  <- omega11 * I11 + omega12 * I12 - (sigma2 + omega2 + gamma2) * I2
     dI3  <- omega2 * I2 - (sigma3 + gamma3 + delta) * I3
     dQ   <- sigma11 * I11 + sigma12 * I12 + sigma2 * I2 + sigma3 * I3 - delta * Q
     dR   <- delta * I3 + delta * Q - alfa * R
@@ -289,13 +290,13 @@ pars <- c(mu = 0.0000001, p = 0.8, p11 = 0.8, p12 = 0.99, p2 = 0.8, p3 = 0.999,
           beta_l1_11 = 3, beta_l1_12 = 10, beta_l2_11 = 5, beta_l2_12 = 15,
           beta_l2 = 0.3, alfa = 0.2,
           beta_l3 = 0.15,
-          gamma1 = 0.2,
+          gamma11 = 0.2, gamma12 = 0.3,
           gamma2 = 0.6,
           gamma3 = 0.4,
           sigma11 = 0.02,sigma12 = 0.5,
           sigma2 = 0.06,
           sigma3 = 0.04,
-          omega1 = 0.5,
+          omega11 = 0.5, omega12 = 0.5,
           omega2 = 0.5,
           delta = 1/6)
 
@@ -303,11 +304,104 @@ state <- c(S1 = 50000, S2 = 5000, I11 = 0, I12 = 0, I2 = 0, I3 = 0, Q = 0, R = 0
 times <- seq(0, 40, by = 0.001)
 out <- ode(y = state, times = times, func = SIQR_erlang4, parms = pars)
 
-¿¿{par(mfrow = c(1, 1))
+par(mfrow = c(1, 1))
 options(scipen = 999)
 matplot(out[,1], out[,2:9], type = "l", xlab = "tiempo (Dias)", 
         ylab = "Computadoras", main = "Simulacion de outbrake de Wannacry y respuesta dinamica en el tiempo", 
         col = c("blue", "darkgreen", "red", "darkred", "orange", "yellow", "purple", "black"), lwd = 2)
+legend("topright", c("Susceptible de baja conectividad", "Susceptible de alta conectividad", "Infectado inicial de baja conectividad", "Infectado inicial de alta conectividad", "Periodo de desarrollo de la infeccion", "Periodo final de infeccion", 
+                     "Computadoras en cuarentena", "Computadoras removidas"), 
+       col = c("blue", "darkgreen", "red", "darkred", "orange", "yellow", "purple", "black"), 
+       lty = 1:8, cex = 0.5)
+
+
+## Ahora vamos a simular el outbrake del 2017
+
+SIQR_erlang5 <- function(t, state, parameters) {
+  with(as.list(c(state, parameters)), {
+    N_eff <- S1 + S2 + I11 + I12 + I2 + I3 + Q
+    if (N_eff <= 0) N_eff <- 1
+    lambda1 <- mu * beta_p1 +
+      beta_l1_11 * I11 / N_eff + beta_l1_12 * I12 / N_eff +
+      beta_l2 * I2 / N_eff + beta_l3 * I3 / N_eff
+    
+    lambda2 <- mu * beta_p2 +
+      beta_l2_11 * I11 / N_eff + beta_l2_12 * I12 / N_eff +
+      beta_l2 * I2 / N_eff + beta_l3 * I3 / N_eff
+    
+    ## Factores de la simulacion
+    
+    # 1. El brote empieza en el dia 1.
+    
+    if (t >= 10){
+      mu <- 1
+      beta_p1 <- 0.3
+      beta_p2 <- 0.5
+    } else {
+    }
+    
+    # 2. El inicio del brote es explosivo, alta tasa de infeccion, ademas la introduccion de infectados es de muchos con alta conectividad
+    
+    if (t >= 10){
+      lambda2 <- lambda2 * 6
+      lambda1 <- lambda1 * 16
+    } else {
+    }
+    
+    # 4. Pasado medio dia se publica el kill switch y se acaba la infeccion.
+    
+    if (t >= 11){
+      lambda2 <- lambda2 * 0.001
+      lambda1 <- lambda1 * 0.001
+      omega11 <- omega11 * 4
+      omega12 <- omega12 * 4
+      omega2 <- omega2 * 4
+      delta <- delta * 3
+      alfa <- alfa * 4
+    } else {
+    }
+    
+    dS1 <- -lambda1 * S1 + p11 * gamma11 * I11 + p12 * gamma12 * I12 +
+      p2 * gamma2 * I2 + p3 * gamma3 * I3 + alfa * p * R
+    
+    dS2 <- -lambda2 * S2 + (1 - p11) * gamma11 * I11 + (1 - p12) * gamma12 * I12 +
+      (1 - p2) * gamma2 * I2 + (1 - p3) * gamma3 * I3 + alfa * (1 - p) * R
+    
+    dI11 <- lambda1 * S1 - (sigma11 + omega11 + gamma11) * I11
+    dI12 <- lambda2 * S2 - (sigma12 + omega12 + gamma12) * I12
+    dI2  <- omega11 * I11 + omega12 * I12 - (sigma2 + omega2 + gamma2) * I2
+    dI3  <- omega2 * I2 - (sigma3 + gamma3 + delta) * I3
+    dQ   <- sigma11 * I11 + sigma12 * I12 + sigma2 * I2 + sigma3 * I3 - delta * Q
+    dR   <- delta * I3 + delta * Q - alfa * R
+    
+    list(c(dS1, dS2, dI11, dI12, dI2, dI3, dQ, dR))
+  })
+}
+
+pars <- c(mu = 0.00001, p = 0.8, p11 = 0.8, p12 = 0.99, p2 = 0.8, p3 = 0.999,
+          beta_p1 = 0.00000000001, beta_p2 = 0.000000000001,
+          beta_l1_11 = 3, beta_l1_12 = 10, beta_l2_11 = 5, beta_l2_12 = 15,
+          beta_l2 = 0.3, alfa = 0.2,
+          beta_l3 = 0.15,
+          gamma11 = 0.2, gamma12 = 0.3,
+          gamma2 = 0.6,
+          gamma3 = 0.4,
+          sigma11 = 0.02,sigma12 = 0.5,
+          sigma2 = 0.06,
+          sigma3 = 0.04,
+          omega11 = 0.5, omega12 = 0.5,
+          omega2 = 0.5,
+          delta = 1/6)
+
+state <- c(S1 = 45000, S2 = 5000, I11 = 0, I12 = 0, I2 = 0, I3 = 0, Q = 0, R = 0)
+times <- seq(0, 20, by = 0.0001)
+out <- ode(y = state, times = times, func = SIQR_erlang5, parms = pars)
+
+par(mfrow = c(1, 1))
+options(scipen = 999)
+matplot(out[,1], out[,2:9], type = "l", xlab = "tiempo (Dias)", 
+        ylab = "Computadoras", main = "Simulacion de outbrake de Wannacry en 2017", 
+        col = c("blue", "darkgreen", "red", "darkred", "orange", "yellow", "purple", "black"), lwd = 2, xlim = c(9,12))
 legend("topright", c("Susceptible de baja conectividad", "Susceptible de alta conectividad", "Infectado inicial de baja conectividad", "Infectado inicial de alta conectividad", "Periodo de desarrollo de la infeccion", "Periodo final de infeccion", 
                      "Computadoras en cuarentena", "Computadoras removidas"), 
        col = c("blue", "darkgreen", "red", "darkred", "orange", "yellow", "purple", "black"), 
